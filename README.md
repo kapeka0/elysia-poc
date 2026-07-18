@@ -2,12 +2,13 @@
 
 A minimal, realistic 3-tier setup demonstrating that Elysia leaks request headers
 in the `found` field of a `422` validation error. See the full write-up in
-[`../REPORT.md`](../REPORT.md).
+[REPORT.md](REPORT.md).
 
 Reverse proxies / API gateways often enrich upstream requests with internal
-headers, and these sometimes carry internal credentials (service tokens, cache credentials...). Because Elysia echoes the full header set in `found`, those internal
-credentials — which the external client never sent and must never see — leak back
-in the error response.
+headers, and these sometimes carry internal credentials (service tokens, cache
+credentials...). Because Elysia echoes the full header set in `found`, those
+internal credentials — which the external client never sent and must never see —
+leak back in the error response.
 
 ```
 [ attacker ]  --GET /account-->  [ PROXY :8080 ]  --injects internal headers-->  [ VICTIM :3737 (Elysia) ]
