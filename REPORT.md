@@ -15,6 +15,12 @@ error body and copies the request headers into `found` so the caller can see wha
 was received. With `normalize: false` the header set is not cleaned, so headers
 not declared in the schema are included too.
 
+In the source:
+
+- The headers schema is checked in [compose.ts](https://github.com/elysiajs/elysia/blob/1.4.29/src/compose.ts), which calls `validator.headers.Check(c.headers)` and, on failure, raises a `ValidationError` with the full `c.headers` object as the value.
+- [ValidationError](https://github.com/elysiajs/elysia/blob/1.4.29/src/error.ts#L460) writes that value into `found`. This happens even in the production branch (`isProduction && !allowUnsafeValidationDetails`), so `allowUnsafeValidationDetails: false` does not protect `found`.
+- `.Clean()` (the cleaner that would strip undeclared headers) is only applied when `normalize` is enabled — see [schema.ts](https://github.com/elysiajs/elysia/blob/1.4.29/src/schema.ts).
+
 ## Preconditions
 
 - A route validates `headers`.
