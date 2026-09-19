@@ -1,4 +1,4 @@
-# Elysia header-leak — server PoC project
+# Elysia header-leak
 
 A poc demonstrating that Elysia leaks request headers
 in the `found` field of a `422` validation error. See the full write-up in
